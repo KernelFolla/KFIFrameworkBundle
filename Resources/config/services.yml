@@ -1,0 +1,13 @@
+services:
+    kfi_fw.user_manager:
+        class: KFI\FrameworkBundle\Service\UserManager
+        arguments:
+            - @fos_user.user_manager
+            - @fos_user.security.login_manager
+            - %fos_user.firewall_name%
+            - @security.context
+            - @security.encoder_factory
+    kfi_fw.twig.extension:
+        class: KFI\FrameworkBundle\Service\FrameworkTwigExtension
+        tags:
+            - { name: twig.extension }
