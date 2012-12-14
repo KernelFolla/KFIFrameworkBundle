@@ -4,6 +4,7 @@ namespace KFI\FrameworkBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+
 //use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 //use Symfony\Bridge\Doctrine\Form\EventListener\MergeDoctrineCollectionListener;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,10 +17,7 @@ class RepositoryTransformer implements DataTransformerInterface
 
     public static function bind(FormBuilderInterface $builder, ObjectRepository $repo)
     {
-        $builder
-            //->addViewTransformer(new CollectionToArrayTransformer(), true)
-            //->addEventSubscriber(new MergeDoctrineCollectionListener())
-            ->addViewTransformer(new self($repo));
+        $builder->addViewTransformer(new self($repo));
     }
 
     public function __construct(ObjectRepository $repo)
@@ -47,11 +45,7 @@ class RepositoryTransformer implements DataTransformerInterface
     }
 
     /**
-     * transform an array of id in array of object
-     *
-     * @param mixed $ids
-     * @return object[]
-     * @throws TransformationFailedException
+     * {@inheritdoc}
      */
     public function reverseTransform($ids)
     {
