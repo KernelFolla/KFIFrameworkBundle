@@ -24,10 +24,18 @@ abstract class JunctionTableTransformer implements DataTransformerInterface
     abstract protected function transformItem($item);
 
     /**
-     * @param object $children
-     * @return object
+     * @param $children
+     * @param $pos
+     * @return mixed
      */
-    abstract protected function createNewItem($children);
+    abstract protected function createNewItem($children, $pos);
+
+    /**
+     * @param $item
+     * @param $pos
+     * @return mixed
+     */
+    abstract protected function bindTmpItem($item, $pos);
 
     public function __construct(ObjectRepository $junctionRepo, ObjectRepository $childrenRepo)
     {
@@ -47,9 +55,11 @@ abstract class JunctionTableTransformer implements DataTransformerInterface
         }
 
         foreach ($collection as $item) {
-            $c                           = $this->transformItem($item);
-            $this->tmpItems[$c->getId()] = $item;
-            $ret[]                       = $c;
+            if(isset($item)){
+                $c                           = $this->transformItem($item);
+                $this->tmpItems[$c->getId()] = $item;
+                $ret[]                       = $c;
+            }
         }
 
         return $ret;
@@ -61,22 +71,22 @@ abstract class JunctionTableTransformer implements DataTransformerInterface
         $items = $this->childrenTransformer->reverseTransform($items);
         $ret   = new ArrayCollection();
         foreach ($items as $item) {
-            $obj   = $this->reverseTransformItem($item);
-            $ret->add($obj);
+            $ret->add($this->reverseTransformItem($item, $ret->count()));
         }
         return $ret;
     }
 
     /**
-     * @param Object $item
-     * @return Object
+     * @param object $item
+     * @param int $pos
+     * @return object
      */
-    public function reverseTransformItem($item)
+    public function reverseTransformItem($item, $pos)
     {
         $id = $item->getId();
 
         return isset($this->tmpItems[$id]) ?
-            $this->tmpItems[$id]
-            : $this->createNewItem($item);
+            $this->bindTmpItem($this->tmpItems[$id], $pos)
+            : $this->createNewItem($item,$pos);
     }
 }
