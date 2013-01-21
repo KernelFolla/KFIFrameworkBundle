@@ -1,0 +1,23 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_label %}
+    {% spaceless %}
+        <label for="{{ id }}" class="control-label">{{ id|replace({'_':'.'})|trans }}</label>
+    {% endspaceless %}
+{% endblock %}
+
+{% block form_errors %}
+    <div class="errors">
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="control-group">
+            {{ form_errors(form) }}
+            {{ form_label(form) }}
+            {{ form_widget(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}
