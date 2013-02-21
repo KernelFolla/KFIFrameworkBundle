@@ -21,3 +21,28 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block choice_widget %}
+    {% spaceless %}
+        {% if expanded %}
+            {{ block('choice_widget_expanded') }}
+        {% else %}
+            {{ block('choice_widget_collapsed') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock choice_widget %}
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            <ul class="choice_expanded">
+            {% for child in form %}
+                <li>
+                {{ form_widget(child) }}
+                {{ form_label(child) }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}

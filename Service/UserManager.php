@@ -90,6 +90,13 @@ class UserManager
     }
 
     /**
+     * @return mixed
+     */
+    public function getCurrent(){
+        return $this->securityContext->getToken()->getUser();
+    }
+
+    /**
      * @return UserInterface
      */
     public function createUser(){
