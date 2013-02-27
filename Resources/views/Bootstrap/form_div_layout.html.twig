@@ -7,9 +7,11 @@
 {% endblock %}
 
 {% block form_errors %}
+    {% if errors|length > 0 %}
     <div class="errors">
         {{ parent() }}
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block form_row %}
